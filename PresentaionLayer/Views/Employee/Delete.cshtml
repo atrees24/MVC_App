@@ -1,0 +1,13 @@
+﻿@model EmployeeViewModel
+
+<h1>Delete Employee: @Model.Name</h1>
+
+<div class="form-group">
+
+    <partial name="PartialViews/DeleteDetails"></partial>
+
+<form asp-action="Delete">
+    <input type="hidden" asp-for="Id" />
+    <button type="submit" class="btn btn-danger">Delete</button>
+    <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+</form>

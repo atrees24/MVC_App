@@ -1,0 +1,82 @@
+﻿@model IEnumerable<EmployeeViewModel>
+
+@{
+    ViewData["Title"] = "Employees";
+}
+
+<div class="row mb-3">
+    <div class="col-md-12">
+        <a class="btn btn-primary float-right" asp-action="Create">Create new Employee</a>
+    </div>
+</div>
+
+<div class="mt-2">
+    <form method="get" asp-action="Index" class="row offset-2">
+        <div class="col-10">
+            <input class="form-control" type="text" placeholder="Employee's Name" name="SearchValue" required/>
+        </div>
+        <div class="col-2">
+            <input  class="btn btn-info" type="submit" value="Search"/>
+        </div>
+
+    </form>
+</div>
+
+
+
+
+
+@if (Model.Any())
+{
+    <table class="table table-striped table-hover table-bordered">
+        <thead class="thead-dark">
+            <tr>
+                <th>@Html.DisplayNameFor(e => e.Name)</th>
+                <th>@Html.DisplayNameFor(e => e.Age)</th>
+                <th>@Html.DisplayNameFor(e => e.Address)</th>
+                <th>@Html.DisplayNameFor(e => e.Salary)</th>
+                <th>@Html.DisplayNameFor(e => e.Department)</th>
+                <th>@Html.DisplayNameFor(e => e.Email)</th>
+                <th>@Html.DisplayNameFor(e => e.Phone)</th>
+                <th>@Html.DisplayNameFor(e => e.IsActive)</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var employee in Model)
+            {
+                <tr>
+                    <td>@employee.Name</td>
+                    <td>@employee.Age</td>
+                    <td>@employee.Address</td>                   
+                    <td>@employee.Salary</td>
+                    <td>@employee.Department?.Name</td>
+                    <td>@Html.DisplayFor(e => employee.Email)</td>
+                    <td>@employee.Phone</td>
+                    <td>
+                        @if (employee.IsActive)
+                        {
+                            <span style="color: green;">&#9679;</span>
+                        }
+                        else
+                        {
+                            <span style="color: red;">&#9679;</span>
+                        }
+                    </td>
+                    <td>
+                        <a asp-action="Details" asp-route-id="@employee.Id" class="btn btn-info">Details</a>
+                        <a asp-action="Edit" asp-route-id="@employee.Id" class="btn btn-primary">Edit</a>
+                        <a asp-action="Delete" asp-route-id="@employee.Id" class="btn btn-danger">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <div class="alert alert-info">
+        <h4>No Employees Found</h4>
+        <p>There are no employees in the database.</p>
+    </div>
+}

@@ -1,0 +1,13 @@
+﻿@{
+    ViewData["Title"] = "Create Employee";
+}
+
+@model EmployeeViewModel
+
+<h1>Create Employee</h1>
+<a asp-action="Index" class="btn btn-secondary">Back</a>
+
+<form asp-action="Create">
+     <partial name="PartialViews/CreateEdit" />
+    <button type="submit" class="btn btn-primary">Create</button>
+</form>

@@ -1,0 +1,49 @@
+﻿@model IEnumerable<Department>
+
+@{
+    ViewData["Title"] = "Departments";
+}
+
+<div class="row mb-3">
+    <div class="col-md-12">
+        <a class="btn btn-primary float-right" asp-action="Create">Create new Department</a>
+    </div>
+</div>
+
+@if (Model.Any())
+{
+    <table class="table table-striped table-hover table-bordered">
+        <thead class="thead-dark">
+            <tr>
+                <th>@Html.DisplayNameFor(d => d.Id)</th>
+                <th>@Html.DisplayNameFor(d => d.Name)</th>
+                <th>@Html.DisplayNameFor(d => d.Code)</th>
+                <th>@Html.DisplayNameFor(d => d.Creation)</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var department in Model)
+            {
+                <tr>
+                    <td>@department.Id</td>
+                    <td>@department.Name</td>
+                    <td>@department.Code</td>
+                    <td>@department.Creation</td>
+                    <td>
+                        <a asp-action="Details" asp-route-id="@department.Id" class="btn btn-info">Details</a>
+                        <a asp-action="Edit" asp-route-id="@department.Id" class="btn btn-primary">Edit</a>
+                        <a asp-action="Delete" asp-route-id="@department.Id" class="btn btn-danger">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <div class="alert alert-info">
+        <h4>No Departments Found</h4>
+        <p>There are no departments in the database.</p>
+    </div>
+}

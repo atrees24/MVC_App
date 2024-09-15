@@ -1,0 +1,24 @@
+﻿
+@{
+    ViewData["Title"] = "Details";
+}
+
+@model DataAccessLayer.Models.Department
+
+<h1>@Model.Name Details</h1>
+<a asp-action="Index" class="btn btn-secondary">Back</a>
+
+<div class="form-group">
+    <label asp-for="Code"></label>
+    <input readonly asp-for="Code" class="form-control" />
+</div>
+<div class="form-group">
+    <label asp-for="Name"></label>
+    <input readonly asp-for="Name" class="form-control" />
+</div>
+<div class="form-group">
+    <label asp-for="Creation"></label>
+    <input readonly asp-for="Creation" class="form-control" />
+</div>
+<button type="submit" class="btn btn-primary" asp-route-id="@Model.Id">Edit</button>
+
