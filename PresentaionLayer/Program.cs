@@ -2,6 +2,7 @@ using BussinesLogicLayer.Interfaces;
 using BussinesLogicLayer.Repositories;
 using DataAccessLayer.Data;
 using DataAccessLayer.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using System.Reflection;
@@ -27,6 +28,8 @@ namespace PresentaionLayer
             builder.Services.AddScoped<IEmployeeRepository,EmployeeRepository>();
             builder.Services.AddScoped<IDepartment,DepartmentRepository>();
             builder.Services.AddScoped<IUniteOfWork,UniteOfWork>();    
+            builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
+                .AddEntityFrameworkStores<DataContext>().AddDefaultTokenProviders();
 
 
             var app = builder.Build();

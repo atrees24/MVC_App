@@ -1,12 +1,16 @@
 ﻿using AutoMapper;
 using BussinesLogicLayer.Interfaces;
 using DataAccessLayer.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.CodeAnalysis;
+using PresentaionLayer.Utilites;
 using PresentaionLayer.ViewModels;
 
 namespace PresentaionLayer.Controllers
 {
+    [Authorize]
     public class EmployeeController : Controller
     {
         private readonly IUniteOfWork _uniteOfWork;
@@ -40,11 +44,20 @@ namespace PresentaionLayer.Controllers
 
 
         [HttpPost]
-        public IActionResult Create(EmployeeViewModel employee)
+		[ValidateAntiForgeryToken]
+		public IActionResult Create(EmployeeViewModel employee)
         {
             if (!ModelState.IsValid) return View(employee);
+
+            if(employee.Image is not null)
+            employee.ImageName = DocumentSetting.UploadFile(employee.Image,"Image");
+
+
             var Emp = Mapper.Map<EmployeeViewModel, Employee>(employee);
+
+
             _uniteOfWork.Employee.Create(Emp);
+            _uniteOfWork.SaveChanges();
             return RedirectToAction(nameof(Index));
         }
         public IActionResult Details(int? id) => EmployeeControllerHandler(id, nameof(Details));
@@ -60,8 +73,13 @@ namespace PresentaionLayer.Controllers
         public IActionResult Edit([FromRoute] int id, EmployeeViewModel employee)
         {
             if (!ModelState.IsValid) return View(employee);
+
+            if (employee.Image is not null)
+                employee.ImageName = DocumentSetting.UploadFile(employee.Image, "Image");
+
             var Emp = Mapper.Map<EmployeeViewModel, Employee>(employee);
             _uniteOfWork.Employee.Update(Emp);
+            _uniteOfWork.SaveChanges();
             return RedirectToAction(nameof(Index));
         }
 
@@ -71,11 +89,17 @@ namespace PresentaionLayer.Controllers
 
 
         [HttpPost]
-        public IActionResult Delete(int id)
+        [ValidateAntiForgeryToken]
+		public IActionResult Delete(int id)
         {
             var employee = _uniteOfWork.Employee.Get(id);
             if (employee is null) return NotFound();
             _uniteOfWork.Employee.Delete(employee);
+            _uniteOfWork.SaveChanges();
+            if (_uniteOfWork.SaveChanges()>0 && employee.ImageName is not null)
+            {
+                DocumentSetting.DeleteFile("Image",employee.ImageName);
+            }
             return RedirectToAction(nameof(Index));
         }
 

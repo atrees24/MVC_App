@@ -7,7 +7,7 @@
 <h1>Edit @Model.Name Employee</h1>
 <a asp-action="Index" class="btn btn-secondary">Back</a>
 
-<form asp-action="Edit">
+<form asp-action="Edit" enctype="multipart/form-data">
     <partial name="PartialViews/CreateEdit" />
     <button type="submit" class="btn btn-primary">Update</button>
 </form>

@@ -17,6 +17,7 @@ namespace DataAccessLayer.Models
         public decimal Salary { get; set; }
         public string Email { get; set; }
         public string Phone { get; set; }
+        public string? ImageName { get; set; }
         public bool IsActive { get; set; }
         public Department? Department { get; set; }
         public int? DepartmentId { get; set; }

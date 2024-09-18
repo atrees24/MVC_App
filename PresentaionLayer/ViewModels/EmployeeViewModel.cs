@@ -14,6 +14,8 @@ namespace PresentaionLayer.ViewModels
         public string Email { get; set; }
         [Phone]
         public string Phone { get; set; }
+        public IFormFile? Image { get; set; }
+        public string? ImageName { get; set; }
         public bool IsActive { get; set; }
         public Department? Department { get; set; }
         public int? DepartmentId { get; set; }

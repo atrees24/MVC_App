@@ -31,6 +31,7 @@
     <table class="table table-striped table-hover table-bordered">
         <thead class="thead-dark">
             <tr>
+                <th>@Html.DisplayNameFor(e => e.Image)</th>
                 <th>@Html.DisplayNameFor(e => e.Name)</th>
                 <th>@Html.DisplayNameFor(e => e.Age)</th>
                 <th>@Html.DisplayNameFor(e => e.Address)</th>
@@ -46,6 +47,7 @@
             @foreach (var employee in Model)
             {
                 <tr>
+                    <td><img src="~/Files/Image/@employee.ImageName" height="75" width="75" class="rounded" /></td>
                     <td>@employee.Name</td>
                     <td>@employee.Age</td>
                     <td>@employee.Address</td>                   
