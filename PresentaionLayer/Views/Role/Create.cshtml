@@ -1,0 +1,16 @@
+﻿
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<
+@model RoleViewModel
+
+<h1>Create Role</h1>
+<a asp-action="Index" class="btn btn-secondary">Back</a>
+
+<form asp-action="Create" >
+    <partial name="PartialViews/CreateEdit" />
+    <button type="submit" class="btn btn-primary">Create</button>
+</form>

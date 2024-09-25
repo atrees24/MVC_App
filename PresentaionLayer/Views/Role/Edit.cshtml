@@ -1,0 +1,16 @@
+﻿@model RoleViewModel
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<a asp-action="Index" class="btn btn-secondary">Back</a>
+
+<form asp-action="Edit" method="post">
+    <partial name="PartialViews/CreateEdit" model="Model" />
+    <div class="mt-2">
+        <a asp-action="AddOrRemoveUser" class="btn btn-info" asp-route-roleId="@Model.Id"> Add OR Remove Users</a>
+    </div>
+    <button type="submit" class="btn btn-primary">Update</button>
+</form>

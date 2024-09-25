@@ -1,0 +1,70 @@
+﻿@model IEnumerable<UserViewModel>
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+<div class="mt-2">
+    <form method="get" asp-action="Index" class="row offset-2">
+        <div class="col-10">
+            <input class="form-control" type="text" placeholder="User's Email" name="email" required />
+        </div>
+        <div class="col-2">
+            <input class="btn btn-info" type="submit" value="Search" />
+        </div>
+
+    </form>
+</div>
+
+
+
+
+
+@if (Model.Any())
+{
+    <table class="table table-striped table-hover table-bordered">
+        <thead class="thead-dark">
+            <tr>
+                <th>@Html.DisplayNameFor(e => e.Id)</th>
+                <th>@Html.DisplayNameFor(e => e.FName)</th>
+                <th>@Html.DisplayNameFor(e => e.LName)</th>
+                <th>@Html.DisplayNameFor(e => e.UserName)</th>
+                <th>@Html.DisplayNameFor(e => e.Email)</th>
+                <th>@Html.DisplayNameFor(e => e.Roles)</th>
+
+                <th>Actions</th>
+                
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var User in Model)
+            {
+                <tr>
+                    <td>@User.Id</td>
+                    <td>@User.FName</td>
+                    <td>@User.LName</td>
+                    <td>@User.UserName</td>
+                    <td>@Html.DisplayFor(e=>User.Email)</td>
+                    <td>@string.Join(",",User.Roles)</td>
+
+
+                    <td>
+                        <a asp-action="Details" asp-route-id="@User.Id" class="btn btn-warning">Details</a>
+                        <a asp-action="Edit" asp-route-id="@User.Id" class="btn btn-primary">Edit</a>
+                        <a asp-action="Delete" asp-route-id="@User.Id" class="btn btn-danger">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <div class="alert alert-info">
+        <h4>No Users Found</h4>
+        <p>There are no Users in the database.</p>
+    </div>
+}
+

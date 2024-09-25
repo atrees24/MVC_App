@@ -71,7 +71,7 @@ namespace PresentaionLayer.Controllers
             return View(model);
 		}
 
-        public IActionResult SignOut()
+        public  IActionResult SignOut()
         {
             _signInManager.SignOutAsync();
             return RedirectToAction(nameof(Login));
