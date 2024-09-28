@@ -1,4 +1,5 @@
 ﻿using DataAccessLayer.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -6,7 +7,8 @@ using PresentaionLayer.ViewModels;
 
 namespace PresentaionLayer.Controllers
 {
-	public class UserController : Controller
+    [Authorize(Roles = "SuperAdmin")]
+    public class UserController : Controller
 	{
 		private readonly UserManager<ApplicationUser> _userManager;
 

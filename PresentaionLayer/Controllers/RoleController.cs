@@ -1,21 +1,20 @@
-﻿using AutoMapper;
-using DataAccessLayer.Models;
+﻿using DataAccessLayer.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using PresentaionLayer.Utilites;
 using PresentaionLayer.ViewModels;
 using System.Data;
 
 namespace PresentaionLayer.Controllers
 {
+    [Authorize(Roles ="SuperAdmin")]
     public class RoleController : Controller
     {
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly UserManager<ApplicationUser> _userManager;
 
-        public RoleController(RoleManager<IdentityRole> roleManager, UserManager<ApplicationUser> userManager )
+        public RoleController(RoleManager<IdentityRole> roleManager, UserManager<ApplicationUser> userManager)
         {
             _roleManager = roleManager;
             _userManager = userManager;
@@ -41,7 +40,7 @@ namespace PresentaionLayer.Controllers
             var model = new RoleViewModel
             {
                 Id = role.Id,
-                Name = role.Name           
+                Name = role.Name
             };
 
             return View(model);
@@ -84,7 +83,7 @@ namespace PresentaionLayer.Controllers
             {
                 Id = role.Id,
                 Name = role.Name
-                
+
             };
 
             return View(Viewname, model);
@@ -110,7 +109,7 @@ namespace PresentaionLayer.Controllers
             }
 
             role.Name = model.Name;
-           
+
             var result = await _roleManager.UpdateAsync(role);
 
             if (result.Succeeded)
@@ -138,7 +137,7 @@ namespace PresentaionLayer.Controllers
             {
                 Id = role.Id,
                 Name = role.Name,
-               
+
             };
 
             return View(model);
@@ -170,7 +169,7 @@ namespace PresentaionLayer.Controllers
             {
                 Id = role.Id,
                 Name = role.Name,
-                
+
             };
 
             return View("Delete", model);
@@ -184,10 +183,11 @@ namespace PresentaionLayer.Controllers
                 return NotFound();
             }
 
+            ViewBag.RoleId = roleId;
             var users = await _userManager.Users.ToListAsync();
             var usersInRole = new List<UserInRoleViewModel>();
 
-            foreach(var user in users)
+            foreach (var user in users)
             {
                 var userInRole = new UserInRoleViewModel
                 {
@@ -199,6 +199,35 @@ namespace PresentaionLayer.Controllers
                 usersInRole.Add(userInRole);
             }
             return View(usersInRole);
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> AddOrRemoveUsers(string roleId, List<UserInRoleViewModel> users)
+        {
+            var role = await _roleManager.FindByIdAsync(roleId);
+            if (role == null) return NotFound();
+            if (ModelState.IsValid) { 
+            foreach (var user in users)
+            {
+                var appUser = await _userManager.FindByIdAsync(user.UserId);
+                if (appUser == null) continue;
+
+                if (user.ISInRole && !await _userManager.IsInRoleAsync(appUser, role.Name))
+                {
+                    await _userManager.AddToRoleAsync(appUser, role.Name);
+                }
+                if (!user.ISInRole && await _userManager.IsInRoleAsync(appUser, role.Name))
+                {
+                    await _userManager.RemoveFromRoleAsync(appUser, role.Name);
+                }
+            }
+
+            return RedirectToAction(nameof(Edit), new { id = roleId });
+            }
+
+            return View(users);
+
         }
 
     }
